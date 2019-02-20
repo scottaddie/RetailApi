@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RetailApi.Model;
-using RetailApi.ViewModels;
+using RetailApi.DataTransferObjects;
 
 namespace RetailApi.Services.Fluent
 {
@@ -59,7 +59,9 @@ namespace RetailApi.Services.Fluent
         public async Task<bool> Delete(int id)
         {
             bool isDeleted = false;
-            Orders order = await GetOrderById(id).FirstOrDefaultAsync();
+            Orders order = await GetOrderById(id)
+                .Include(o => o.ProductOrder)
+                .FirstOrDefaultAsync();
 
             if (order != null)
             {

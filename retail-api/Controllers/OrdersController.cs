@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using RetailApi.ViewModels;
+using RetailApi.DataTransferObjects;
 using System.Threading.Tasks;
 using RetailApi.Services;
 
@@ -37,5 +37,11 @@ namespace RetailApi.Controllers
 
             return NoContent();
         }
+
+        // [HttpPost]
+        // public async Task<ActionResult<CustomerOrder>> Create()
+        // {
+
+        // }
     }
 }

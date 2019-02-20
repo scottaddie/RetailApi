@@ -54,7 +54,11 @@ namespace RetailApi.Model
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.ProductOrder)
-                    .HasForeignKey(d => d.OrderId);
+                    .HasForeignKey(d => d.OrderId)
+                    // The following OnDelete call causes the Order table record to delete too.
+                    // Without this call, the OrderId column values are set to NULL in ProductOrder, but the associated Order record isn't deleted.
+                    // See https://docs.microsoft.com/ef/core/saving/cascade-delete.
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductOrder)

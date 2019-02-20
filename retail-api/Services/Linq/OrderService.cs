@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
 using Remotion.Linq.Clauses;
 using RetailApi.Model;
-using RetailApi.ViewModels;
+using RetailApi.DataTransferObjects;
 
 namespace RetailApi.Services.Linq
 {
@@ -75,32 +77,54 @@ namespace RetailApi.Services.Linq
         public async Task<bool> Delete(int id)
         {
             bool isDeleted = false;
-            Orders order = await GetOrderById(id).FirstOrDefaultAsync();
+            //Orders order = await GetOrderById(id)
+            //    .Include(o => o.ProductOrder)
+            //    .FirstOrDefaultAsync();
+            //TODO: finish writing this query
+            Orders order = await (
+                from o in GetOrderById(id)
+                join po in _context.ProductOrder.AsNoTracking() on o.Id equals po.OrderId
+                select o).FirstOrDefaultAsync();
 
             if (order != null)
             {
-                _context.RemoveRange(order.ProductOrder);
                 _context.Remove(order);
                 await _context.SaveChangesAsync();
                 isDeleted = true;
             }
 
             return isDeleted;
+            // bool isDeleted = false;
+            // Orders order = await GetOrderById(id).FirstOrDefaultAsync();
 
-            //bool isDeleted = false;
-            //List<ProductOrder> productOrders = await (from po in _context.ProductOrder
-            //    where po.OrderId == id
-            //    select po).ToListAsync();
+            // if (order != null)
+            // {
+            //     _context.RemoveRange(order.ProductOrder);
+            //     _context.Remove(order);
+            //     await _context.SaveChangesAsync();
+            //     isDeleted = true;
+            // }
 
-            //if (productOrders.Any())
-            //{
+            // return isDeleted;
+
+            // bool isDeleted = false;
+            // //List<ProductOrder> productOrders = await (from po in _context.ProductOrder
+            // //   where po.OrderId == id
+            // //   select po).ToListAsync();
+            // var result = await (from po in _context.ProductOrder.AsNoTracking()
+            //     join o in _context.Orders.AsNoTracking() on po.OrderId equals o.Id
+            //     where po.OrderId == id
+            //     select po, product).ToListAsync();
+
+            // if (productOrders.Any())
+            // {
             //    _context.RemoveRange(productOrders);
-            //    //_context.Remove(order);
+            //    _context.Remove(productOrders.FirstOrDefault().Order);
             //    await _context.SaveChangesAsync();
             //    isDeleted = true;
-            //}
+            // }
 
-            //return isDeleted;
+            // return isDeleted;
         }
 
         private IQueryable<Orders> GetOrderById(int id) =>

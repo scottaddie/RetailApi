@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RetailApi.ViewModels
+namespace RetailApi.DataTransferObjects
 {
     public class CustomerOrder
     {

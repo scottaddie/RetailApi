@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RetailApi.ViewModels
+namespace RetailApi.DataTransferObjects
 {
     public class OrderLineItem
     {
