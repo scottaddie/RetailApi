@@ -1,0 +1,10 @@
+﻿@page
+@using Microsoft.AspNetCore.Routing
+@model IndexModel
+@inject LinkGenerator UrlGenerator
+
+LinkGenerator.GetPathByAction: <input type="text" value='@UrlGenerator.GetPathByAction(HttpContext, action: "GetAll", controller: "Products")' />
+<br />
+LinkGenerator.GetUriByAction: <input type="text" value='@UrlGenerator.GetUriByAction(HttpContext, action: "GetAll", controller: "Products")' />
+<br />
+Url.RouteUrl: <input type="text" value='@Url.RouteUrl("ControllerOnlyRouteName_Attribute", new { controller = "Products" })' />
