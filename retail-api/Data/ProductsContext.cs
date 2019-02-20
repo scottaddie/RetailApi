@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RetailApi.Models;
 
-namespace RetailApi.Models
+namespace RetailApi.Data
 {
     public partial class ProductsContext : DbContext
     {

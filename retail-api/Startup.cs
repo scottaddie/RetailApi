@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
 using RetailApi.Models;
 using RetailApi.Services;
+using RetailApi.Data;
 using Linq = RetailApi.Services.Linq;
 using Fluent = RetailApi.Services.Fluent;
 

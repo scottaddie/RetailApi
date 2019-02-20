@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
-using RetailApi.Models;
+using RetailApi.Data;
 using RetailApi.DataTransferObjects;
+using RetailApi.Models;
 
 namespace RetailApi.Services.Linq
 {
