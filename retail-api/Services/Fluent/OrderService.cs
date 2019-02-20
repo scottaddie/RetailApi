@@ -59,7 +59,7 @@ namespace RetailApi.Services.Fluent
         public async Task<bool> Delete(int id)
         {
             bool isDeleted = false;
-            Orders order = await GetOrderById(id)
+            Order order = await GetOrderById(id)
                 .Include(o => o.ProductOrder)
                 .FirstOrDefaultAsync();
 
@@ -73,7 +73,7 @@ namespace RetailApi.Services.Fluent
             return isDeleted;
         }
 
-        private IQueryable<Orders> GetOrderById(int id) =>
+        private IQueryable<Order> GetOrderById(int id) =>
             _context.Orders.AsNoTracking().Where(o => o.Id == id);
     }
 }

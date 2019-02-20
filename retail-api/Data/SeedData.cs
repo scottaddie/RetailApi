@@ -17,8 +17,8 @@ namespace RetailApi.Data
                 if (!context.Products.Any())
                 {
                     context.Products.AddRange(
-                        new Products { Name = "Squeaky Bone", Price = 20.99m },
-                        new Products { Name = "Knotted Rope", Price = 12.99m }
+                        new Product { Name = "Squeaky Bone", Price = 20.99m },
+                        new Product { Name = "Knotted Rope", Price = 12.99m }
                     );
                     context.SaveChanges();
                 }
@@ -26,8 +26,8 @@ namespace RetailApi.Data
                 if (!context.Customers.Any())
                 {
                     context.Customers.AddRange(
-                        new Customers { FirstName = "Scott", LastName = "Addie", StreetAddress = "", City = "", StateOrProvinceAbbr = "", Country = "", PostalCode = "", Phone = "", Email = "" },
-                        new Customers { FirstName = "Cam", LastName = "Soper", StreetAddress = "", City = "", StateOrProvinceAbbr = "", Country = "", PostalCode = "", Phone = "", Email = "" }
+                        new Customer { FirstName = "Scott", LastName = "Addie", StreetAddress = "", City = "", StateOrProvinceAbbr = "", Country = "", PostalCode = "", Phone = "", Email = "" },
+                        new Customer { FirstName = "Cam", LastName = "Soper", StreetAddress = "", City = "", StateOrProvinceAbbr = "", Country = "", PostalCode = "", Phone = "", Email = "" }
                     );
                     context.SaveChanges();
                 }
@@ -38,13 +38,13 @@ namespace RetailApi.Data
                     var customer2 = context.Customers.OrderBy(c => c.Id).LastOrDefault();
 
                     context.Orders.AddRange(
-                        new Orders
+                        new Order
                         {
                             OrderPlaced = DateTime.UtcNow.AddDays(-1),
                             OrderFulfilled = DateTime.UtcNow.AddHours(1),
                             Customer = customer1
                         },
-                        new Orders
+                        new Order
                         {
                             OrderPlaced = DateTime.UtcNow.AddDays(-3),
                             OrderFulfilled = DateTime.UtcNow.AddHours(4),

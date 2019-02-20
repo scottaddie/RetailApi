@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace RetailApi.Models
 {
-    public partial class Orders
+    public partial class Order
     {
-        public Orders()
+        public Order()
         {
             ProductOrder = new HashSet<ProductOrder>();
         }
@@ -15,7 +15,7 @@ namespace RetailApi.Models
         public DateTime? OrderFulfilled { get; set; }
         public int? CustomerId { get; set; }
 
-        public virtual Customers Customer { get; set; }
+        public virtual Customer Customer { get; set; }
         public virtual ICollection<ProductOrder> ProductOrder { get; set; }
     }
 }

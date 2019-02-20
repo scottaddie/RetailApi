@@ -80,7 +80,7 @@ namespace RetailApi.Services.Linq
             //    .Include(o => o.ProductOrder)
             //    .FirstOrDefaultAsync();
             //TODO: finish writing this query
-            Orders order = await (
+            Order order = await (
                 from o in GetOrderById(id)
                 join po in _context.ProductOrder.AsNoTracking() on o.Id equals po.OrderId
                 select o).FirstOrDefaultAsync();
@@ -126,7 +126,7 @@ namespace RetailApi.Services.Linq
             // return isDeleted;
         }
 
-        private IQueryable<Orders> GetOrderById(int id) =>
+        private IQueryable<Order> GetOrderById(int id) =>
             from o in _context.Orders.AsNoTracking()
             where o.Id == id
             select o;

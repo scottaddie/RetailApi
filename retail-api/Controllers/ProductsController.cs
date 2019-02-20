@@ -25,11 +25,11 @@ namespace RetailApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Products>> GetAll() =>
+        public ActionResult<List<Product>> GetAll() =>
             _context.Products.ToList();
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Products>> GetById(long id)
+        public async Task<ActionResult<Product>> GetById(long id)
         {
             var product = await _context.Products.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace RetailApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Products>> Create(Products product)
+        public async Task<ActionResult<Product>> Create(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace RetailApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(long id, Products product)
+        public async Task<IActionResult> Update(long id, Product product)
         {
             if (id != product.Id)
             {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace RetailApi.Models
 {
-    public partial class Products
+    public partial class Product
     {
-        public Products()
+        public Product()
         {
             ProductOrder = new HashSet<ProductOrder>();
         }

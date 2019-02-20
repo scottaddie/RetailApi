@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace RetailApi.Models
 {
-    public partial class Customers
+    public partial class Customer
     {
-        public Customers()
+        public Customer()
         {
-            Orders = new HashSet<Orders>();
+            Orders = new HashSet<Order>();
         }
 
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace RetailApi.Models
         public string Phone { get; set; }
         public string Email { get; set; }
 
-        public virtual ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

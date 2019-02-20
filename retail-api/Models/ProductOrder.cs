@@ -10,7 +10,7 @@ namespace RetailApi.Models
         public int? ProductId { get; set; }
         public int? OrderId { get; set; }
 
-        public virtual Orders Order { get; set; }
-        public virtual Products Product { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
     }
 }
