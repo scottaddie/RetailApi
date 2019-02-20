@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
-using RetailApi.Model;
+using RetailApi.Models;
 using RetailApi.Services;
 using Linq = RetailApi.Services.Linq;
 using Fluent = RetailApi.Services.Fluent;
@@ -35,8 +35,7 @@ namespace RetailApi
 
             var dbConnection = Configuration.GetConnectionString("SomeDatabase");
 
-            //services.AddDbContext<ProductsContext>(options =>
-            services.AddDbContext<SomeDatabaseContext>(options =>
+            services.AddDbContext<ProductsContext>(options =>
                 //options.UseSqlServer(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=SomeDatabase;Integrated Security=SSPI;"));
                 options.UseSqlServer(dbConnection));
                 //options.UseInMemoryDatabase("Products"));

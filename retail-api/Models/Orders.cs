@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RetailApi.Model
+namespace RetailApi.Models
 {
     public partial class Orders
     {

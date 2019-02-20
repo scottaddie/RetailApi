@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using RetailApi.Model;
+using RetailApi.Models;
 
 namespace RetailApi.Data
 {
@@ -11,8 +11,8 @@ namespace RetailApi.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new SomeDatabaseContext(serviceProvider
-                .GetRequiredService<DbContextOptions<SomeDatabaseContext>>()))
+            using (var context = new ProductsContext(serviceProvider
+                .GetRequiredService<DbContextOptions<ProductsContext>>()))
             {
                 if (!context.Products.Any())
                 {
@@ -64,8 +64,6 @@ namespace RetailApi.Data
 
                     context.SaveChanges();
                 }
-
-
             }
         }
     }

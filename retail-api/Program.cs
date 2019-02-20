@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RetailApi.Data;
-using RetailApi.Model;
+using RetailApi.Models;
 
 namespace RetailApi
 {
@@ -30,7 +30,7 @@ namespace RetailApi
 
                 try
                 {
-                    var context = services.GetRequiredService<SomeDatabaseContext>();
+                    var context = services.GetRequiredService<ProductsContext>();
                     context.Database.EnsureCreated();
                     SeedData.Initialize(services);
                 }

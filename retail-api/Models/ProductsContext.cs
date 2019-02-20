@@ -2,15 +2,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace RetailApi.Model
+namespace RetailApi.Models
 {
-    public partial class SomeDatabaseContext : DbContext
+    public partial class ProductsContext : DbContext
     {
-        public SomeDatabaseContext()
+        public ProductsContext()
         {
         }
 
-        public SomeDatabaseContext(DbContextOptions<SomeDatabaseContext> options)
+        public ProductsContext(DbContextOptions<ProductsContext> options)
             : base(options)
         {
         }

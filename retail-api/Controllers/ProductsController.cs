@@ -5,22 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using RetailApi.Data;
-using RetailApi.Model;
-//using RetailApi.Models;
+using RetailApi.Models;
 
 namespace RetailApi.Controllers
 {
-    //[Route("api/{controller}", Name = "ControllerOnlyRouteName_Attribute")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly SomeDatabaseContext _context;
+        private readonly ProductsContext _context;
         //private readonly LinkGenerator _linkGenerator;
 
         //public ProductsController(ProductsContext context,
         //                          LinkGenerator linkGenerator)
-        public ProductsController(SomeDatabaseContext context)
+        public ProductsController(ProductsContext context)
         {
             _context = context;
             //_linkGenerator = linkGenerator;

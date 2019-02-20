@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RetailApi.Model;
+using RetailApi.Models;
 
 namespace RetailApi.Migrations
 {
-    [DbContext(typeof(SomeDatabaseContext))]
+    [DbContext(typeof(ProductsContext))]
     [Migration("20190214194058_InitialCreate")]
     partial class InitialCreate
     {

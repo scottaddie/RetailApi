@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RetailApi.Model;
+using RetailApi.Models;
 
 namespace RetailApi.Migrations
 {
-    [DbContext(typeof(SomeDatabaseContext))]
-    partial class SomeDatabaseContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ProductsContext))]
+    partial class ProductsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -4,17 +4,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
-using Remotion.Linq.Clauses;
-using RetailApi.Model;
+using RetailApi.Models;
 using RetailApi.DataTransferObjects;
 
 namespace RetailApi.Services.Linq
 {
     public class OrderService : IOrderService
     {
-        private readonly SomeDatabaseContext _context;
+        private readonly ProductsContext _context;
 
-        public OrderService(SomeDatabaseContext context)
+        public OrderService(ProductsContext context)
         {
             _context = context;
         }

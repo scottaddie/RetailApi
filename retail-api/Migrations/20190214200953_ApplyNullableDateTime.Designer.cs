@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RetailApi.Model;
+using RetailApi.Models;
 
 namespace RetailApi.Migrations
 {
-    [DbContext(typeof(SomeDatabaseContext))]
+    [DbContext(typeof(ProductsContext))]
     [Migration("20190214200953_ApplyNullableDateTime")]
     partial class ApplyNullableDateTime
     {
@@ -21,7 +21,7 @@ namespace RetailApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RetailApi.Model.Customers", b =>
+            modelBuilder.Entity("RetailApi.Models.Customers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace RetailApi.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("RetailApi.Model.Orders", b =>
+            modelBuilder.Entity("RetailApi.Models.Orders", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace RetailApi.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("RetailApi.Model.ProductOrder", b =>
+            modelBuilder.Entity("RetailApi.Models.ProductOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace RetailApi.Migrations
                     b.ToTable("ProductOrder");
                 });
 
-            modelBuilder.Entity("RetailApi.Model.Products", b =>
+            modelBuilder.Entity("RetailApi.Models.Products", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,20 +107,20 @@ namespace RetailApi.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("RetailApi.Model.Orders", b =>
+            modelBuilder.Entity("RetailApi.Models.Orders", b =>
                 {
-                    b.HasOne("RetailApi.Model.Customers", "Customer")
+                    b.HasOne("RetailApi.Models.Customers", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
                 });
 
-            modelBuilder.Entity("RetailApi.Model.ProductOrder", b =>
+            modelBuilder.Entity("RetailApi.Models.ProductOrder", b =>
                 {
-                    b.HasOne("RetailApi.Model.Orders", "Order")
+                    b.HasOne("RetailApi.Models.Orders", "Order")
                         .WithMany("ProductOrder")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("RetailApi.Model.Products", "Product")
+                    b.HasOne("RetailApi.Models.Products", "Product")
                         .WithMany("ProductOrder")
                         .HasForeignKey("ProductId");
                 });

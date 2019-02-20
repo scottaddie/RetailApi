@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RetailApi.Model;
+using RetailApi.Models;
 using RetailApi.DataTransferObjects;
 
 namespace RetailApi.Services.Fluent
 {
     public class OrderService : IOrderService
     {
-        private readonly SomeDatabaseContext _context;
+        private readonly ProductsContext _context;
 
-        public OrderService(SomeDatabaseContext context)
+        public OrderService(ProductsContext context)
         {
             _context = context;
         }
