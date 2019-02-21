@@ -74,12 +74,11 @@ namespace RetailApi.Services.Fluent
             return isDeleted;
         }
 
-        private IQueryable<Order> GetOrderById(int id) =>
-            _context.Orders.AsNoTracking().Where(o => o.Id == id);
 
         public async Task<Order> Create(NewOrder newOrder)
         {
             List<ProductOrder> lineItems = new List<ProductOrder>();
+
             foreach(var li in newOrder.OrderLineItems)
             {
                 lineItems.Add(new ProductOrder
@@ -87,7 +86,6 @@ namespace RetailApi.Services.Fluent
                                 Quantity = li.Quantity,
                                 ProductId = li.ProductId
                               });
-            
             }
 
             Order order = new Order
@@ -101,5 +99,8 @@ namespace RetailApi.Services.Fluent
 
             return order;
         }
+
+        private IQueryable<Order> GetOrderById(int id) =>
+            _context.Orders.AsNoTracking().Where(o => o.Id == id);
     }
 }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RetailApi.DataTransferObjects;
-using System.Threading.Tasks;
-using RetailApi.Services;
 using RetailApi.Models;
+using RetailApi.Services;
 
 namespace RetailApi.Controllers
 {

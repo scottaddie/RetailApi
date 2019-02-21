@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RetailApi.Models
+﻿namespace RetailApi.Models
 {
     public partial class ProductOrder
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using RetailApi.DataTransferObjects;
 using System.Threading.Tasks;
+using RetailApi.DataTransferObjects;
 using RetailApi.Models;
 
 namespace RetailApi.Services
