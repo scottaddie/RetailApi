@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace RetailApi.Services.Fluent
                 .OrderByDescending(o => o.OrderPlaced)
                 .Select(o => new CustomerOrder
                 {
+                    OrderId = o.Id,
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
                     OrderFulfilled =
                         (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
@@ -77,7 +79,7 @@ namespace RetailApi.Services.Fluent
 
         public async Task<Order> Create(NewOrder newOrder)
         {
-            List<ProductOrder> lineItems = new List<ProductOrder>();
+            var lineItems = new List<ProductOrder>();
 
             foreach(var li in newOrder.OrderLineItems)
             {
@@ -98,6 +100,22 @@ namespace RetailApi.Services.Fluent
             await _context.SaveChangesAsync();
 
             return order;
+        }
+
+        public async Task<bool> SetFulfilled(int id)
+        {
+            bool isFulfilled = false;
+            var order = await GetOrderById(id).FirstOrDefaultAsync();
+
+            if (order != null)
+            {
+                order.OrderFulfilled = DateTime.UtcNow;
+                _context.Entry(order).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                isFulfilled = true;
+            }
+
+            return isFulfilled;
         }
 
         private IQueryable<Order> GetOrderById(int id) =>

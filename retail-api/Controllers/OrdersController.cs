@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RetailApi.DataTransferObjects;
 using RetailApi.Models;
@@ -49,18 +50,17 @@ namespace RetailApi.Controllers
                 nameof(GetById), new { id = order.Id }, order);
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(long id, Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> SetFulfilled(int id)
+        {
+            bool isFulfilled = await _orderService.SetFulfilled(id);
 
-        //    _context.Entry(product).State = EntityState.Modified;
-        //    await _context.SaveChangesAsync();
+            if (!isFulfilled)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }

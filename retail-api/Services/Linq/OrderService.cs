@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace RetailApi.Services.Linq
                 orderby o.OrderPlaced descending
                 select new CustomerOrder
                 {
+                    OrderId = o.Id,
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
                     OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
@@ -77,7 +79,7 @@ namespace RetailApi.Services.Linq
 
         public async Task<Order> Create(NewOrder newOrder)
         {
-            List<ProductOrder> lineItems = new List<ProductOrder>();
+            var lineItems = new List<ProductOrder>();
 
             foreach(var li in newOrder.OrderLineItems)
             {
@@ -90,6 +92,7 @@ namespace RetailApi.Services.Linq
 
             Order order = new Order
             {
+                OrderPlaced = DateTime.UtcNow,
                 CustomerId = newOrder.CustomerId,
                 ProductOrder = lineItems
             };
@@ -98,6 +101,22 @@ namespace RetailApi.Services.Linq
             await _context.SaveChangesAsync();
 
             return order;            
+        }
+
+        public async Task<bool> SetFulfilled(int id)
+        {
+            bool isFulfilled = false;
+            var order = await GetOrderById(id).FirstOrDefaultAsync();
+
+            if (order != null)
+            {
+                order.OrderFulfilled = DateTime.UtcNow;
+                _context.Entry(order).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                isFulfilled = true;
+            }
+
+            return isFulfilled;
         }
 
         private IQueryable<Order> GetOrderById(int id) =>
