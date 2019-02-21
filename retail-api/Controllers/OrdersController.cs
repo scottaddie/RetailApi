@@ -48,5 +48,19 @@ namespace RetailApi.Controllers
             return CreatedAtAction(
                 nameof(GetById), new { id = order.Id }, order);
         }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(long id, Product product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(product).State = EntityState.Modified;
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
     }
 }

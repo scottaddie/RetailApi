@@ -23,20 +23,23 @@ namespace RetailApi
 
         private static void SeedDatabase(IWebHost host)
         {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
 
-                try
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+
+                if (context.Database.EnsureCreated())
                 {
-                    var context = services.GetRequiredService<ProductsContext>();
-                    context.Database.EnsureCreated();
-                    SeedData.Initialize(services);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "A database seeding error occurred.");
+                    try
+                    {
+                        SeedData.Initialize(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "A database seeding error occurred.");
+                    }
                 }
             }
         }
