@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using RetailApi.DataTransferObjects;
 using System.Threading.Tasks;
 using RetailApi.Services;
+using RetailApi.Models;
 
 namespace RetailApi.Controllers
 {
@@ -38,10 +40,14 @@ namespace RetailApi.Controllers
             return NoContent();
         }
 
-        // [HttpPost]
-        // public async Task<ActionResult<CustomerOrder>> Create()
-        // {
+        [HttpPost]
+        public async Task<ActionResult<CustomerOrder>> Create(NewOrder newOrder)
+        {
+            // Create the order
+            Order order = await _orderService.Create(newOrder);
 
-        // }
+            return CreatedAtAction(
+                nameof(GetById), new { id = order.Id }, order);
+        }
     }
 }

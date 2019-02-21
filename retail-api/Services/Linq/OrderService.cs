@@ -127,6 +127,31 @@ namespace RetailApi.Services.Linq
             // return isDeleted;
         }
 
+        public async Task<Order> Create(NewOrder newOrder)
+        {
+            List<ProductOrder> lineItems = new List<ProductOrder>();
+            foreach(var li in newOrder.OrderLineItems)
+            {
+                lineItems.Add(new ProductOrder
+                              {
+                                Quantity = li.Quantity,
+                                ProductId = li.ProductId
+                              });
+            
+            }
+
+            Order order = new Order
+            {
+                CustomerId = newOrder.CustomerId,
+                ProductOrder = lineItems
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return order;            
+        }
+
         private IQueryable<Order> GetOrderById(int id) =>
             from o in _context.Orders.AsNoTracking()
             where o.Id == id
