@@ -4,9 +4,14 @@
 instanceId=$(($RANDOM * $RANDOM))
 
 # Constants
-gitUrl = https://github.com/scottaddie/retailapi
-gitBranch = master
-gitRepoWorkingDirectory = ~/retailapi/retail-api
+gitUrl=https://github.com/scottaddie/retailapi
+gitBranch=master
+gitRepoWorkingDirectory=~/retailapi/retail-api
+
+# Colors
+white=\033[0;37m        # White
+boldPurple=\033[1;35m   # Purple
+purple=\033[0;35m       # Purple
 
 location=SouthCentralUs
 resourceGroup=EfCoreModule
@@ -16,7 +21,9 @@ sqlUsername=SqlUser
 sqlPassword=Pass.$RANDOM
 databaseName=ContosoPets
 
-keyVaultName=vault$instanceId
+keyVaultEndpoint=vault$instanceId
+
+connectInfo=''
 
 # File name to hold connection information
 fileName=connect.txt
@@ -26,35 +33,47 @@ cd ~
 
 # Download the sample project, restore NuGet packages, and build
 echo Downloading code...
-git clone $gitUrl $master
+#git clone $gitUrl $master
 echo Building code...
 cd $gitRepoWorkingDirectory
-dotnet build
+#dotnet build
+
+# Install .NET Core global tool to display connection info
+dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
 # Functions
-writeResultsToFile() {
-
-    # Init file
-    echo Connection Information > $fileName 
-    echo ---------------------- >> $fileName
-    echo $'\n' >> $fileName
+buildResults() {
+    connectInfo+=$'\n'
+    connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37mshow-connect-info)'
+    connectInfo+=$'\n'
 
     # db connection
-    echo "SQL Database Connection String: Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;User ID={0};Password={1};Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" \
-        >> $fileName
-    echo $'\n' >> $fileName
+    connectInfo+=$'\033[1;35mDB Connection String:\033[0;37m '
+    connectInfo+=$'Data Source='
+    connectInfo+=$sqlServerName
+    connectInfo+='.database.windows.net;Initial Catalog='
+    connectInfo+=$databaseName
+    connectInfo+=';User ID={0};Password={1};Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False' 
+    connectInfo+=$'\n' 
     # username 
-    echo SQL Username: $sqlUsername >> $fileName
-    echo $'\n' >> $fileName
+    connectInfo+=$'\033[1;35mDB Username: \033[0;37m'
+    connectInfo+=$sqlUsername 
+    connectInfo+=$'\n'
     # password
-    echo SQL Password: $sqlPassword >> $fileName
-    echo $'\n' >> $fileName
+    connectInfo+=$'\033[1;35mDB Password: \033[0;37m'
+    connectInfo+=$sqlPassword
+    connectInfo+=$'\n'
     # key vault
-    echo Key Vault Name: $keyVaultName >> $fileName
-    echo $'\n' >> $fileName
+    connectInfo+=$'\033[1;35mKey Vault Endpoint: \033[0;37m'
+    connectInfo+=$keyVaultEndpoint
+    connectInfo+=$'\n'
 
-    echo Web App URL: >> fileName
-    echo $'\n' >> $fileName
+    connectInfo+=$'\033[1;35mWeb App URL: \033[0;37m'
+    connectInfo+='nada'
+    connectInfo+=$'\n'
+
+    # Set to purple for drawing .NET Bot
+    connectInfo+=$'\033[1;35m'
 }
 
 # Provision Azure Resource Group
@@ -106,29 +125,32 @@ provisionKeyVault() {
 
     az keyvault create \
         --resource-group $resourceGroup \
-        --name $keyVaultName \
+        --name $keyVaultEndpoint \
     
     az keyvault secret set \
         --name $databaseName--Username \
         --value SqlUser \
-        --vault-name $keyVaultName
+        --vault-name $keyVaultEndpoint
     
     az keyvault secret set \
         --name $databaseName--Password \
         --value $sqlPassword \
-        --vault-name $keyVaultName 
+        --vault-name $keyVaultEndpoint 
 
     echo Done!   
 }
 
 # Create resources
-provisionResourceGroup 
-provisionDatabase 
-provisionAppService
-provisionKeyVault 
+#provisionResourceGroup
+#provisionDatabase
+#provisionAppService
+#provisionKeyVault
 
-writeResultsToFile
+#writeResultsToFile
 
-code .
+buildResults
+~/dotnetsay/dotnetsay "$connectInfo"
+alias show-connect-info='echo "$connectInfo"'
+
 
 #END
