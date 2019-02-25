@@ -25,20 +25,26 @@ keyVaultEndpoint=vault$instanceId
 
 connectFile='connect.txt'
 connectInfo=''
-# Set location
-cd ~
-
-# Download the sample project, restore NuGet packages, and build
-echo Downloading code...
-git clone $gitUrl $master
-echo Building code...
-cd $gitRepoWorkingDirectory
-#dotnet build
-
-# Install .NET Core global tool to display connection info
-dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
 # Functions
+prepareEnvironment() {
+    # Set location
+    cd ~
+
+    # Install .NET Core global tool to display connection info
+    dotnet tool install dotnetsay --tool-path ~/dotnetsay
+
+    clear
+    ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
+
+    # Download the sample project, restore NuGet packages, and build
+    echo $'\033[0;37mDownloading code...'
+    git clone $gitUrl $master
+    echo Building code...
+    cd $gitRepoWorkingDirectory
+    dotnet build
+}
+
 buildResults() {
     connectInfo+=$'\n'
     connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37mcat ~/connect.txt)'
@@ -71,6 +77,11 @@ buildResults() {
 
     # Set to purple for drawing .NET Bot
     connectInfo+=$'\033[1;35m'
+
+    clear
+    ~/dotnetsay/dotnetsay $'\n\033[1;37mYour environment is ready!\n\033[0;37mI set up some \033[1;34mAzure\033[0;37m resources and downloaded the code you\'ll need. \033[1;35mYou can find your connection information below.\033[1;35m'
+    echo "$connectInfo" > ~/$connectFile
+    cat ~/$connectFile
 }
 
 # Provision Azure Resource Group
@@ -137,26 +148,13 @@ provisionKeyVault() {
     echo Done!   
 }
 
-clear
-~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\nPress [\033[1;32mEnter\033[0;37m] when ready.\033[1;35m'
-read -p ''
 
 # Create resources
 #provisionResourceGroup
 #provisionDatabase
 #provisionAppService
 #provisionKeyVault
-
-#writeResultsToFile
-
+prepareEnvironment
 buildResults
-#~/dotnetsay/dotnetsay "$connectInfo"
-clear
-~/dotnetsay/dotnetsay $'\n\033[1;37mYour environment is ready!\n\033[0;37mI set up some \033[1;34mAzure\033[0;37m and some \033[1;35mmore stuff\033[0;37m!\033[1;35m'
-echo "$connectInfo"
-echo "$connectInfo" > ~/$connectFile
-#alias show-connect-info="more $connectFile"
-#echo "alias show-connect-info='more $connectFile'" >> ~/.bashaliases
 
 #END
-
