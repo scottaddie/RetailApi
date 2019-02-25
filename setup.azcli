@@ -46,7 +46,7 @@ prepareEnvironment() {
     
     # Download the sample project, restore NuGet packages, and build
     echo Downloading code...
-    git clone --quiet $gitUrl $gitBranch
+    git clone --branch $gitBranch $gitUrl --quiet
     echo Building code...
     cd $gitRepoWorkingDirectory
     dotnet build --verbosity quiet
