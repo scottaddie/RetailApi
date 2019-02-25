@@ -54,7 +54,7 @@ prepareEnvironment() {
 
 buildResults() {
     connectInfo+=$'\n'
-    connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37mcat ~/connect.txt\033[0;37m)'
+    connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37mcat ~/connect.txt \033[0;37m)'
     connectInfo+=$'\n'
 
     # db connection
@@ -66,8 +66,12 @@ buildResults() {
     connectInfo+=';User ID={0};Password={1};Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False' 
     connectInfo+=$'\n' 
     # username 
+    connectInfo+=$'\033[1;35mDB Hostname: \033[0;37m'
+    connectInfo+=$sqlServerName.database.windows.net 
+    connectInfo+=$'\n'
+    # username 
     connectInfo+=$'\033[1;35mDB Username: \033[0;37m'
-    connectInfo+=$sqlUsername 
+    connectInfo+=$sqlUsername@$sqlServerName 
     connectInfo+=$'\n'
     # password
     connectInfo+=$'\033[1;35mDB Password: \033[0;37m'
@@ -85,7 +89,7 @@ buildResults() {
     # Set to purple for drawing .NET Bot
     connectInfo+=$'\033[1;35m'
 
-    clear
+    echo $'Done!\n\n\n\n'
     ~/dotnetsay/dotnetsay $'\n\033[1;37mYour environment is ready!\n\033[0;37mI set up some \033[1;34mAzure\033[0;37m resources and downloaded the code you\'ll need.\n\033[1;35mYou can find your connection information below.\033[1;35m'
     echo "$connectInfo" > ~/$connectFile
     cat ~/$connectFile
