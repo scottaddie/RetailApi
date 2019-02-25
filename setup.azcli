@@ -211,9 +211,9 @@ provisionKeyVault() {
 # Create resources
 prepareEnvironment
 provisionResourceGroup
-#provisionDatabase
+provisionDatabase
 provisionAppService
-#provisionKeyVault
+provisionKeyVault
 buildResults
 
 #END
