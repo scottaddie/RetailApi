@@ -213,7 +213,7 @@ prepareEnvironment
 provisionResourceGroup
 #provisionDatabase
 provisionAppService
-provisionKeyVault
+#provisionKeyVault
 buildResults
 
 #END
