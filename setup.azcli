@@ -50,8 +50,6 @@ prepareEnvironment() {
     echo Building code...
     cd $gitRepoWorkingDirectory
     dotnet build --verbosity quiet
-
-    echo Done!
 }
 
 buildResults() {
@@ -101,8 +99,6 @@ provisionResourceGroup() {
         --name $resourceGroup \
         --location $location \
         --output none
-    
-    echo Done!
 }
 
 # Provision Azure SQL Database
@@ -130,8 +126,6 @@ provisionDatabase() {
         --server $sqlServerName \
         --resource-group $resourceGroup \
         --output none
-    
-    echo Done!
 }
 
 # Provision Azure App Service
@@ -176,8 +170,6 @@ provisionAppService() {
 
     # Add the URL as a Git remote repository
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
-    
-    echo Done!
 }
 
 # Provision Azure Key Vault
@@ -207,9 +199,7 @@ provisionKeyVault() {
         --name vault$instanceId \
         --object-id $webAppPrincipalId \
         --secret-permissions get list \
-        --output none
-
-    echo Done!   
+        --output none  
 }
 
 # Create resources
