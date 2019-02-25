@@ -151,7 +151,9 @@ provisionAppService() {
     # Enable Managed Service Identity on web app
     webAppPrincipalId=$(az webapp identity assign \
         --name $websiteName \
-        --resource-group $resourceGroup)
+        --resource-group $resourceGroup
+        --query principalId 
+        --output tsv )
 
     # Specify project to build when doing git push
     az webapp config appsettings set \
