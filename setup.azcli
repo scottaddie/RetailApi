@@ -1,28 +1,28 @@
 #!/bin/bash
 
 # Generate a random number for unique resource names
-instanceId=$(($RANDOM * $RANDOM))
+declare instanceId=$(($RANDOM * $RANDOM))
 
-# Constants
-gitUrl=https://github.com/scottaddie/retailapi
-gitBranch=master
-gitRepoWorkingDirectory=~/retailapi/retail-api
-retailApiProjectFile=retail-api/RetailApi.csproj
+# Variables
+declare gitUrl=https://github.com/scottaddie/retailapi
+declare gitBranch=master
+declare gitRepoWorkingDirectory=~/retailapi/retail-api
+declare retailApiProjectFile=retail-api/RetailApi.csproj
 
-sqlServerName=sql$instanceId
-sqlUsername=SqlUser
-sqlPassword=Pass.$RANDOM
-databaseName=ContosoPets
+declare sqlServerName=sql$instanceId
+declare sqlUsername=SqlUser
+declare sqlPassword=Pass.$RANDOM
+declare databaseName=ContosoPets
 
-keyVaultEndpoint=vault$instanceId
-resourceGroupName=EfCoreModule
+declare keyVaultEndpoint=vault$instanceId
+declare resourceGroupName=EfCoreModule
 
-websiteName=web$instanceId
-webAppPrincipalId=''
-webAppDeploymentPassword=0iQzB97IEc
+declare websiteName=web$instanceId
+declare webAppPrincipalId=
+declare webAppDeploymentPassword=0iQzB97IEc
 
-connectFile='connect.txt'
-connectInfo=''
+declare connectFile='connect.txt'
+declare connectInfo=
 
 # Functions
 setAzureCliDefaults() {
@@ -185,18 +185,6 @@ provisionKeyVault() {
         --name $keyVaultEndpoint \
         --output none
     
-    az keyvault secret set \
-        --name $databaseName--Username \
-        --value SqlUser \
-        --vault-name $keyVaultEndpoint \
-        --output none        
-    
-    az keyvault secret set \
-        --name $databaseName--Password \
-        --value $sqlPassword \
-        --vault-name $keyVaultEndpoint \
-        --output none
-
     # Set an access policy for the web app's principal ID
     # which permits Get & List operations on the Key Vault
     az keyvault set-policy \
