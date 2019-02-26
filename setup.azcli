@@ -9,9 +9,6 @@ gitBranch=master
 gitRepoWorkingDirectory=~/retailapi/retail-api
 retailApiProjectFile=retail-api/RetailApi.csproj
 
-location=SouthCentralUs
-resourceGroup=EfCoreModule
-
 sqlServerName=sql$instanceId
 sqlUsername=SqlUser
 sqlPassword=Pass.$RANDOM
@@ -22,12 +19,26 @@ keyVaultEndpoint=vault$instanceId
 websiteName=web$instanceId
 webAppPrincipalId=''
 webAppDeploymentPassword=0iQzB97IEc
-webAppDeploymentTask=''
 
 connectFile='connect.txt'
 connectInfo=''
 
 # Functions
+setAzureCliDefaults() {
+    echo Setting default Azure CLI values...
+
+    az configure --defaults \
+        group=EfCoreModule \
+        location=SouthCentralUs \
+        web=$websiteName
+}
+resetAzureCliDefaults() {
+    echo Resetting default Azure CLI values...
+    az configure --defaults \
+        group= \
+        location= \
+        web=
+}
 prepareEnvironment() {
     echo Downloading code and preparing environment...
     
@@ -105,8 +116,6 @@ provisionResourceGroup() {
     echo Provisioning Azure Resource Group...
 
     az group create \
-        --name $resourceGroup \
-        --location $location \
         --output none
 }
 
@@ -116,16 +125,13 @@ provisionDatabase() {
 
     az sql server create \
         --name $sqlServerName \
-        --resource-group $resourceGroup \
         --admin-user $sqlUsername \
         --admin-password $sqlPassword \
-        --location $location \
         --output none
 
     az sql db create \
         --name $databaseName \
         --server $sqlServerName \
-        --resource-group $resourceGroup \
         --output none
 
     az sql server firewall-rule create \
@@ -133,7 +139,6 @@ provisionDatabase() {
         --start-ip-address 0.0.0.0 \
         --end-ip-address 0.0.0.0 \
         --server $sqlServerName \
-        --resource-group $resourceGroup \
         --output none
 }
 
@@ -143,31 +148,18 @@ provisionAppService() {
 
     az appservice plan create \
         --name $websiteName \
-        --resource-group $resourceGroup \
-        --location $location \
         --output none
 
     az webapp create \
-        --name $websiteName \
         --plan $websiteName \
-        --resource-group $resourceGroup \
         --output none
         
     # Enable Managed Service Identity on web app
     webAppPrincipalId=$(az webapp identity assign \
-        --name $websiteName \
-        --resource-group $resourceGroup \
         --query principalId \
         --output tsv)
 
-    # Specify project to build when doing git push
-    az webapp config appsettings set \
-        --name $websiteName \
-        --resource-group $resourceGroup \
-        --settings PROJECT=$retailApiProjectFile \
-        --output none
-
-    # Create a deployment user
+        # Create a deployment user
     az webapp deployment user set \
         --user-name $websiteName \
         --password $webAppDeploymentPassword \
@@ -175,8 +167,6 @@ provisionAppService() {
     
     # Set the deployment source
     az webapp deployment source config-local-git \
-        --name $websiteName \
-        --resource-group $resourceGroup \
         --output none
 
     # Add the URL as a Git remote repository
@@ -185,11 +175,9 @@ provisionAppService() {
 
 # Provision Azure Key Vault
 provisionKeyVault() {
-    wait webAppDeploymentTask    
     echo Provisioning Azure Key Vault...
 
     az keyvault create \
-        --resource-group $resourceGroup \
         --name $keyVaultEndpoint \
         --output none
     
@@ -217,11 +205,14 @@ provisionKeyVault() {
 
 # Create resources
 prepareEnvironment
+setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-provisionAppService & webAppDeploymentTask=$!
-provisionKeyVault
+provisionAppService & 
+webAppDeploymentTask=$!
+wait $webAppDeploymentTask && provisionKeyVault
 wait
+resetAzureCliDefaults
 buildResults
 
 #END
