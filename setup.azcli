@@ -18,7 +18,7 @@ declare keyVaultEndpoint=vault$instanceId
 declare resourceGroupName=EfCoreModule
 
 declare websiteName=web$instanceId
-declare webAppPrincipalId=
+declare -g webAppPrincipalId=
 declare webAppDeploymentPassword=0iQzB97IEc
 
 declare connectFile='connect.txt'
