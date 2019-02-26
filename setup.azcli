@@ -15,6 +15,7 @@ sqlPassword=Pass.$RANDOM
 databaseName=ContosoPets
 
 keyVaultEndpoint=vault$instanceId
+resourceGroupName=EfCoreModule
 
 websiteName=web$instanceId
 webAppPrincipalId=''
@@ -28,7 +29,7 @@ setAzureCliDefaults() {
     echo Setting default Azure CLI values...
 
     az configure --defaults \
-        group=EfCoreModule \
+        group=$resourceGroupName \
         location=SouthCentralUs \
         web=$websiteName
 }
@@ -116,6 +117,7 @@ provisionResourceGroup() {
     echo Provisioning Azure Resource Group...
 
     az group create \
+        --name $resourceGroupName \
         --output none
 }
 
