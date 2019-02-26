@@ -66,7 +66,7 @@ prepareEnvironment() {
     git clone --branch $gitBranch $gitUrl --quiet
     echo Building code...
     cd $gitRepoWorkingDirectory
-    echo Deployment tasks run asyncronously from here on, in case you're wondering why the output is ordered funny.
+    echo Deployment tasks run asyncronously from here on, in case you\'re wondering why the output is ordered funny.
     dotnet build --verbosity quiet &
 }
 
