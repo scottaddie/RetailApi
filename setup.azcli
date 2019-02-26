@@ -208,6 +208,7 @@ provisionKeyVault() {
         --output none  
 }
 
+
 # Create resources
 prepareEnvironment
 provisionResourceGroup
