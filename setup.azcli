@@ -153,8 +153,10 @@ provisionAppService() {
         --output none
 
     az webapp create \
+        --name $websiteName \
         --plan $websiteName \
         --output none
+        
         
     # Enable Managed Service Identity on web app
     webAppPrincipalId=$(az webapp identity assign \
