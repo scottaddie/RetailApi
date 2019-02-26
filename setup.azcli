@@ -22,6 +22,7 @@ keyVaultEndpoint=vault$instanceId
 websiteName=web$instanceId
 webAppPrincipalId=''
 webAppDeploymentPassword=0iQzB97IEc
+webAppDeploymentTask=''
 
 connectFile='connect.txt'
 connectInfo=''
@@ -33,6 +34,10 @@ prepareEnvironment() {
     # Set location
     cd ~
 
+    # Display installed .NET Core SDK version
+    dotnetsdkversion=$(dotnet --version)
+    echo Using .NET Core SDK version $dotnetsdkversion
+
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
@@ -40,7 +45,7 @@ prepareEnvironment() {
     ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
     echo $'\033[0;37m'
 
-    # Set up Git global variables
+    # Set global Git config variables
     git config --global user.name "Microsoft Learn Student"
     git config --global user.email learn@contoso.com
     
@@ -49,7 +54,7 @@ prepareEnvironment() {
     git clone --branch $gitBranch $gitUrl --quiet
     echo Building code...
     cd $gitRepoWorkingDirectory
-    dotnet build --verbosity quiet
+    dotnet build --verbosity quiet &
 }
 
 buildResults() {
@@ -180,6 +185,7 @@ provisionAppService() {
 
 # Provision Azure Key Vault
 provisionKeyVault() {
+    wait webAppDeploymentTask    
     echo Provisioning Azure Key Vault...
 
     az keyvault create \
@@ -212,9 +218,10 @@ provisionKeyVault() {
 # Create resources
 prepareEnvironment
 provisionResourceGroup
-provisionDatabase
-provisionAppService
+provisionDatabase &
+provisionAppService & webAppDeploymentTask=$!
 provisionKeyVault
+wait
 buildResults
 
 #END
