@@ -66,6 +66,7 @@ prepareEnvironment() {
     git clone --branch $gitBranch $gitUrl --quiet
     echo Building code...
     cd $gitRepoWorkingDirectory
+    echo Deployment tasks run asyncronously from here on, in case you're wondering why the output is ordered funny.
     dotnet build --verbosity quiet &
 }
 
@@ -156,7 +157,6 @@ provisionAppService() {
         --name $websiteName \
         --plan $websiteName \
         --output none
-        
         
     # Enable Managed Service Identity on web app
     webAppPrincipalId=$(az webapp identity assign \
