@@ -53,7 +53,6 @@ prepareEnvironment() {
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
-    clear
     ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
     echo $'\033[0;37m'
 
@@ -107,7 +106,7 @@ buildResults() {
     # Set to purple for drawing .NET Bot
     connectInfo+=$'\033[1;35m'
 
-    echo $'Done!\n\n\n\n'
+    echo $'Done!\n\n'
     ~/dotnetsay/dotnetsay $'\n\033[1;37mYour environment is ready!\n\033[0;37mI set up some \033[1;34mAzure\033[0;37m resources and downloaded the code you\'ll need.\n\033[1;35mYou can find your connection information below.\033[1;35m'
     echo "$connectInfo" > ~/$connectFile
     cat ~/$connectFile
