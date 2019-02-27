@@ -40,14 +40,14 @@ resetAzureCliDefaults() {
         web=
 }
 prepareEnvironment() {
-    echo Downloading code and preparing environment...
+    echo "Downloading code and preparing environment..."
     
     # Set location
     cd ~
 
     # Display installed .NET Core SDK version
     dotnetsdkversion=$(dotnet --version)
-    echo Using .NET Core SDK version $dotnetsdkversion
+    echo "Using .NET Core SDK version $dotnetsdkversion"
 
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
@@ -60,14 +60,15 @@ prepareEnvironment() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo Downloading code...
+    echo "Downloading code..."
     git clone --branch $gitBranch $gitUrl --quiet
+    echo "Done downloading code!"
 
-    echo Deployment tasks run asynchronously from here on, in case you\'re wondering why the output is ordered funny.
+    echo "Deployment tasks run asynchronously from here on, in case you're wondering why the output is ordered funny."
 
-    echo Building code...
+    echo "Building code..."
     cd $gitRepoWorkingDirectory
-    (dotnet build --verbosity quiet && echo Done building code!) &
+    (dotnet build --verbosity quiet && echo "Done building code!") &
 }
 
 buildResults() {
@@ -115,18 +116,18 @@ buildResults() {
 
 # Provision Azure Resource Group
 provisionResourceGroup() {
-    echo Provisioning Azure Resource Group...
+    echo "Provisioning Azure Resource Group..."
 
     az group create \
         --name $resourceGroupName \
         --output none
 
-    echo Done provisioning Azure Resource Group!
+    echo "Done provisioning Azure Resource Group!"
 }
 
 # Provision Azure SQL Database
 provisionDatabase() {
-    echo Provisioning Azure SQL Database...
+    echo "Provisioning Azure SQL Database..."
 
     az sql server create \
         --name $sqlServerName \
@@ -146,12 +147,12 @@ provisionDatabase() {
         --server $sqlServerName \
         --output none
 
-    echo Done provisioning Azure SQL Database!
+    echo "Done provisioning Azure SQL Database!"
 }
 
 # Provision Azure App Service
 provisionAppService() {
-    echo Provisioning Azure App Service...
+    echo "Provisioning Azure App Service..."
 
     az appservice plan create \
         --name $websiteName \
@@ -180,12 +181,12 @@ provisionAppService() {
     # Add the URL as a Git remote repository
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
 
-    echo Done provisioning Azure App Service!
+    echo "Done provisioning Azure App Service!"
 }
 
 # Provision Azure Key Vault
 provisionKeyVaultForWebApp() {
-    echo Provisioning Azure Key Vault...
+    echo "Provisioning Azure Key Vault..."
 
     az keyvault create \
         --name $keyVaultEndpoint \
@@ -199,7 +200,7 @@ provisionKeyVaultForWebApp() {
         --secret-permissions get list \
         --output none  
 
-    echo Done provisioning Azure Key Vault!
+    echo "Done provisioning Azure Key Vault!"
 }
 
 # Create resources
