@@ -24,7 +24,7 @@ declare connectFile='connect.txt'
 
 # Functions
 setAzureCliDefaults() {
-    echo Setting default Azure CLI values...
+    echo "Setting default Azure CLI values..."
 
     az configure --defaults \
         group=$resourceGroupName \
@@ -32,7 +32,7 @@ setAzureCliDefaults() {
         web=$websiteName
 }
 resetAzureCliDefaults() {
-    echo Resetting default Azure CLI values...
+    echo "Resetting default Azure CLI values..."
     az configure --defaults \
         group= \
         location= \
@@ -54,7 +54,7 @@ initEnvironment(){
     ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
     echo $'\033[0;37m'
 
-    echo "Deployment tasks run asynchronously from here on, in case you're wondering why the output is ordered funny."
+    echo "Deployment tasks run asynchronously from here on."
 }
 
 downloadAndBuild() {
@@ -126,7 +126,7 @@ provisionResourceGroup() {
         --name $resourceGroupName \
         --output none
 
-    echo "Done provisioning Azure Resource Group!"
+    echo "Provisioned Azure Resource Group!"
 }
 
 # Provision Azure SQL Database
@@ -151,7 +151,7 @@ provisionDatabase() {
         --server $sqlServerName \
         --output none
 
-    echo "Done provisioning Azure SQL Database!"
+    echo "Provisioned Azure SQL Database!"
 }
 
 # Provision Azure App Service
@@ -186,7 +186,7 @@ provisionAppService() {
     cd $gitRepoWorkingDirectory
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
 
-    echo "Done provisioning Azure App Service!"
+    echo "Provisioned Azure App Service!"
 }
 
 # Provision Azure Key Vault
@@ -205,7 +205,7 @@ provisionKeyVaultForWebApp() {
         --secret-permissions get list \
         --output none  
 
-    echo "Done provisioning Azure Key Vault!"
+    echo "Provisioned Azure Key Vault!"
 }
 
 # Create resources
