@@ -162,6 +162,8 @@ provisionAppService() {
         --query principalId \
         --output tsv)
 
+    echo webAppPrincipalId: $webAppPrincipalId
+
         # Create a deployment user
     az webapp deployment user set \
         --user-name $websiteName \
@@ -184,6 +186,8 @@ provisionKeyVault() {
         --name $keyVaultEndpoint \
         --output none
     
+    echo kv webAppPrincipalId: $webAppPrincipalId
+
     # Set an access policy for the web app's principal ID
     # which permits Get & List operations on the Key Vault
     az keyvault set-policy \
