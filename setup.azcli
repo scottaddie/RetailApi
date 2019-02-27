@@ -62,10 +62,12 @@ prepareEnvironment() {
     # Download the sample project, restore NuGet packages, and build
     echo Downloading code...
     git clone --branch $gitBranch $gitUrl --quiet
+
+    echo Deployment tasks run asynchronously from here on, in case you\'re wondering why the output is ordered funny.
+
     echo Building code...
     cd $gitRepoWorkingDirectory
-    echo Deployment tasks run asynchronously from here on, in case you\'re wondering why the output is ordered funny.
-    dotnet build --verbosity quiet &
+    (dotnet build --verbosity quiet && echo Done building code!) &
 }
 
 buildResults() {
@@ -118,6 +120,8 @@ provisionResourceGroup() {
     az group create \
         --name $resourceGroupName \
         --output none
+
+    echo Done provisioning Azure Resource Group!
 }
 
 # Provision Azure SQL Database
@@ -141,6 +145,8 @@ provisionDatabase() {
         --end-ip-address 0.0.0.0 \
         --server $sqlServerName \
         --output none
+
+    echo Done provisioning Azure SQL Database!
 }
 
 # Provision Azure App Service
@@ -161,8 +167,6 @@ provisionAppService() {
         --query principalId \
         --output tsv)
 
-    echo webAppPrincipalId: $webAppPrincipalId
-
         # Create a deployment user
     az webapp deployment user set \
         --user-name $websiteName \
@@ -175,18 +179,18 @@ provisionAppService() {
 
     # Add the URL as a Git remote repository
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
+
+    echo Done provisioning Azure App Service!
 }
 
 # Provision Azure Key Vault
-provisionKeyVault() {
+provisionKeyVaultForWebApp() {
     echo Provisioning Azure Key Vault...
 
     az keyvault create \
         --name $keyVaultEndpoint \
         --output none
     
-    echo kv webAppPrincipalId: $webAppPrincipalId
-
     # Set an access policy for the web app's principal ID
     # which permits Get & List operations on the Key Vault
     az keyvault set-policy \
@@ -194,15 +198,16 @@ provisionKeyVault() {
         --object-id $webAppPrincipalId \
         --secret-permissions get list \
         --output none  
-}
 
+    echo Done provisioning Azure Key Vault!
+}
 
 # Create resources
 prepareEnvironment
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-(provisionAppService && provisionKeyVault) & 
+(provisionAppService && provisionKeyVaultForWebApp) & 
 wait
 resetAzureCliDefaults
 buildResults
