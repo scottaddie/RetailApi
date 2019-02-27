@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using RetailApi.Data;
 using RetailApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -35,12 +36,12 @@ namespace RetailApi
 
             var dbConnection = Configuration.GetConnectionString("SomeDatabase");
 
-            services.AddDbContext<ProductsContext>(options =>
+            services.AddDbContext<ContosoPetsContext>(options =>
                 options.UseSqlServer(dbConnection));
 
             services.AddMvc()
                 // https://github.com/aspnet/AspNetCore/issues/3047#issuecomment-433764670
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>

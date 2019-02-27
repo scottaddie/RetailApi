@@ -5,13 +5,13 @@ using RetailApi.Models;
 
 namespace RetailApi.Data
 {
-    public partial class ProductsContext : DbContext
+    public partial class ContosoPetsContext : DbContext
     {
-        public ProductsContext()
+        public ContosoPetsContext()
         {
         }
 
-        public ProductsContext(DbContextOptions<ProductsContext> options)
+        public ContosoPetsContext(DbContextOptions<ContosoPetsContext> options)
             : base(options)
         {
         }

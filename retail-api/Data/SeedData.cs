@@ -7,7 +7,7 @@ namespace RetailApi.Data
 {
     public static class SeedData
     {
-        public static void Initialize(ProductsContext context)
+        public static void Initialize(ContosoPetsContext context)
         {
             if (!context.Products.Any())
             {

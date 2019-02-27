@@ -27,7 +27,7 @@ namespace RetailApi
 
             using (var scope = scopeFactory.CreateScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+                var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
 
                 if (context.Database.EnsureCreated())
                 {

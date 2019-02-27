@@ -11,9 +11,9 @@ namespace RetailApi.Services.Linq
 {
     public class OrderService : IOrderService
     {
-        private readonly ProductsContext _context;
+        private readonly ContosoPetsContext _context;
 
-        public OrderService(ProductsContext context)
+        public OrderService(ContosoPetsContext context)
         {
             _context = context;
         }
