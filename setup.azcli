@@ -68,7 +68,7 @@ prepareEnvironment() {
 
     echo "Building code..."
     cd $gitRepoWorkingDirectory
-    (dotnet build --verbosity quiet && echo "Done building code!") &
+    (dotnet build --verbosity quiet && echo $'\033[0;37mDone building code!') &
 }
 
 buildResults() {
