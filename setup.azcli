@@ -18,7 +18,6 @@ declare keyVaultEndpoint=vault$instanceId
 declare resourceGroupName=EfCoreModule
 
 declare websiteName=web$instanceId
-declare -g webAppPrincipalId=
 declare webAppDeploymentPassword=0iQzB97IEc
 
 declare connectFile='connect.txt'
@@ -158,7 +157,7 @@ provisionAppService() {
         --output none
         
     # Enable Managed Service Identity on web app
-    webAppPrincipalId=$(az webapp identity assign \
+    export webAppPrincipalId=$(az webapp identity assign \
         --query principalId \
         --output tsv)
 
