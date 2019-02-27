@@ -21,7 +21,6 @@ declare websiteName=web$instanceId
 declare webAppDeploymentPassword=0iQzB97IEc
 
 declare connectFile='connect.txt'
-declare connectInfo=
 
 # Functions
 setAzureCliDefaults() {
@@ -76,8 +75,8 @@ downloadAndBuild() {
     (dotnet build --verbosity quiet && echo $'\033[0;37mDone building code!') &
 }
 
-buildResults() {
-    connectInfo+=$'\n'
+showResults() {
+    connectInfo=$'\n'
     connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37mcat ~/connect.txt \033[0;37m)'
     connectInfo+=$'\n'
 
@@ -184,6 +183,7 @@ provisionAppService() {
         --output none
 
     # Add the URL as a Git remote repository
+    cd $gitRepoWorkingDirectory
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
 
     echo "Done provisioning Azure App Service!"
@@ -219,6 +219,6 @@ wait $buildTask
 (provisionAppService && provisionKeyVaultForWebApp) & 
 wait
 resetAzureCliDefaults
-buildResults
+showResults
 
 #END
