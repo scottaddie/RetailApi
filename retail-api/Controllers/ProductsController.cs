@@ -12,9 +12,9 @@ namespace RetailApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductsContext _context;
+        private readonly ContosoPetsContext _context;
 
-        public ProductsController(ProductsContext context)
+        public ProductsController(ContosoPetsContext context)
         {
             _context = context;
         }
