@@ -157,7 +157,7 @@ provisionAppService() {
         --output none
         
     # Enable Managed Service Identity on web app
-    export webAppPrincipalId=$(az webapp identity assign \
+    declare -g webAppPrincipalId=$(az webapp identity assign \
         --query principalId \
         --output tsv)
 
@@ -202,9 +202,7 @@ prepareEnvironment
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-provisionAppService & 
-webAppDeploymentTask=$!
-wait $webAppDeploymentTask && provisionKeyVault
+(provisionAppService && provisionKeyVault) & 
 wait
 resetAzureCliDefaults
 buildResults
