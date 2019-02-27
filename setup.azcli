@@ -211,9 +211,11 @@ provisionKeyVaultForWebApp() {
 # Create resources
 initEnvironment
 downloadAndBuild &
+buildTask=$!
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
+wait $buildTask
 (provisionAppService && provisionKeyVaultForWebApp) & 
 wait
 resetAzureCliDefaults
