@@ -39,9 +39,8 @@ resetAzureCliDefaults() {
         location= \
         web=
 }
-prepareEnvironment() {
-    echo "Downloading code and preparing environment..."
-    
+
+initEnvironment(){
     # Set location
     cd ~
 
@@ -52,8 +51,16 @@ prepareEnvironment() {
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
+    # Greetings!
     ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
     echo $'\033[0;37m'
+
+    echo "Deployment tasks run asynchronously from here on, in case you're wondering why the output is ordered funny."
+}
+
+downloadAndBuild() {
+    # Set location
+    cd ~
 
     # Set global Git config variables
     git config --global user.name "Microsoft Learn Student"
@@ -63,8 +70,6 @@ prepareEnvironment() {
     echo "Downloading code..."
     git clone --branch $gitBranch $gitUrl --quiet
     echo "Done downloading code!"
-
-    echo "Deployment tasks run asynchronously from here on, in case you're wondering why the output is ordered funny."
 
     echo "Building code..."
     cd $gitRepoWorkingDirectory
@@ -204,7 +209,8 @@ provisionKeyVaultForWebApp() {
 }
 
 # Create resources
-prepareEnvironment
+initEnvironment
+downloadAndBuild &
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
