@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using RetailDomain.Data;
-using RetailDomain.Services;
+using RetailData.Data;
+using RetailData.Services;
 using Swashbuckle.AspNetCore.Swagger;
-using Fluent = RetailDomain.Services.Fluent;
-using Linq = RetailDomain.Services.Linq;
+using Fluent = RetailData.Services.Fluent;
+using Linq = RetailData.Services.Linq;
 
 namespace RetailApi
 {
@@ -34,7 +34,7 @@ namespace RetailApi
                 services.AddScoped<IOrderService, Fluent.OrderService>();
             }
 
-            var dbConnection = Configuration.GetConnectionString("SomeDatabase");
+            string dbConnection = Configuration.GetConnectionString("SomeDatabase");
 
             services.AddDbContext<ContosoPetsContext>(options =>
                 options.UseSqlServer(dbConnection));
