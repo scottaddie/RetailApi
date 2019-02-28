@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RetailApi.Models;
+using RetailDomain.Models;
 
-namespace RetailApi.Data
+namespace RetailData.Data
 {
     public partial class ContosoPetsContext : DbContext
     {

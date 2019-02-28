@@ -1,4 +1,4 @@
-﻿namespace RetailApi.Models
+﻿namespace RetailDomain.Models
 {
     public partial class ProductOrder
     {

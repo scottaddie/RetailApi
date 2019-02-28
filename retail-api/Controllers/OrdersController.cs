@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RetailApi.DataTransferObjects;
-using RetailApi.Models;
-using RetailApi.Services;
+using RetailDomain.DataTransferObjects;
+using RetailDomain.Models;
+using RetailData.Services;
 
 namespace RetailApi.Controllers
 {

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using RetailApi.Data;
-using RetailApi.Services;
+using RetailDomain.Data;
+using RetailDomain.Services;
 using Swashbuckle.AspNetCore.Swagger;
-using Fluent = RetailApi.Services.Fluent;
-using Linq = RetailApi.Services.Linq;
+using Fluent = RetailDomain.Services.Fluent;
+using Linq = RetailDomain.Services.Linq;
 
 namespace RetailApi
 {

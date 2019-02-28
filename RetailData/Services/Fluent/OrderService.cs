@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RetailApi.Data;
-using RetailApi.DataTransferObjects;
-using RetailApi.Models;
+using RetailData.Data;
+using RetailDomain.DataTransferObjects;
+using RetailDomain.Models;
 
-namespace RetailApi.Services.Fluent
+namespace RetailData.Services.Fluent
 {
     public class OrderService : IOrderService
     {
@@ -50,10 +50,10 @@ namespace RetailApi.Services.Fluent
                     OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
                     OrderLineItems = (o.ProductOrder.Select(po => new OrderLineItem
-                                                            {
-                                                                ProductQuantity = po.Quantity,
-                                                                ProductName = po.Product.Name
-                                                            })).ToList()
+                    {
+                        ProductQuantity = po.Quantity,
+                        ProductName = po.Product.Name
+                    })).ToList()
                 }).FirstOrDefaultAsync();
 
             return order;
@@ -81,13 +81,13 @@ namespace RetailApi.Services.Fluent
         {
             var lineItems = new List<ProductOrder>();
 
-            foreach(var li in newOrder.OrderLineItems)
+            foreach (var li in newOrder.OrderLineItems)
             {
                 lineItems.Add(new ProductOrder
-                              {
-                                Quantity = li.Quantity,
-                                ProductId = li.ProductId
-                              });
+                {
+                    Quantity = li.Quantity,
+                    ProductId = li.ProductId
+                });
             }
 
             Order order = new Order
