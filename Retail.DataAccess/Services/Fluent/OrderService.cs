@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RetailData.Data;
-using RetailDomain.DataTransferObjects;
-using RetailDomain.Models;
+using Retail.DataAccess.Data;
+using Retail.Domain.DataTransferObjects;
+using Retail.Domain.Models;
 
-namespace RetailData.Services.Fluent
+namespace Retail.DataAccess.Services.Fluent
 {
     public class OrderService : IOrderService
     {
@@ -26,16 +26,13 @@ namespace RetailData.Services.Fluent
                 {
                     OrderId = o.Id,
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled =
-                        (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
-                    OrderLineItems = (o.ProductOrder.Select(po =>
-                            new OrderLineItem
-                            {
-                                ProductQuantity = po.Quantity,
-                                ProductName = po.Product.Name
-                            }))
-                        .ToList()
+                    OrderLineItems = (o.ProductOrder.Select(po => new OrderLineItem
+                    {
+                        ProductQuantity = po.Quantity,
+                        ProductName = po.Product.Name
+                    })).ToList()
                 })).ToListAsync();
 
             return orders;
@@ -47,7 +44,7 @@ namespace RetailData.Services.Fluent
                 .Select(o => new CustomerOrder
                 {
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
                     OrderLineItems = (o.ProductOrder.Select(po => new OrderLineItem
                     {
@@ -90,7 +87,7 @@ namespace RetailData.Services.Fluent
                 });
             }
 
-            Order order = new Order
+            var order = new Order
             {
                 CustomerId = newOrder.CustomerId,
                 ProductOrder = lineItems
@@ -105,7 +102,7 @@ namespace RetailData.Services.Fluent
         public async Task<bool> SetFulfilled(int id)
         {
             bool isFulfilled = false;
-            var order = await GetOrderById(id).FirstOrDefaultAsync();
+            Order order = await GetOrderById(id).FirstOrDefaultAsync();
 
             if (order != null)
             {

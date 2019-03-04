@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RetailData.Data;
-using RetailDomain.DataTransferObjects;
-using RetailDomain.Models;
+using Retail.DataAccess.Data;
+using Retail.Domain.DataTransferObjects;
+using Retail.Domain.Models;
 
-namespace RetailData.Services.Linq
+namespace Retail.DataAccess.Services.Linq
 {
     public class OrderService : IOrderService
     {
@@ -27,7 +27,7 @@ namespace RetailData.Services.Linq
                 {
                     OrderId = o.Id,
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
                     OrderLineItems = (from po in o.ProductOrder
                                       select new OrderLineItem
@@ -35,7 +35,9 @@ namespace RetailData.Services.Linq
                                           ProductQuantity = po.Quantity,
                                           ProductName = po.Product.Name
                                       }).ToList()
-                }).ToListAsync();
+                })
+                .TagWith<CustomerOrder>("Get all orders")
+                .ToListAsync();
 
             return orders;
         }
@@ -47,7 +49,7 @@ namespace RetailData.Services.Linq
                 select new CustomerOrder
                 {
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
                     OrderLineItems = (from po in o.ProductOrder
                                       select new OrderLineItem
@@ -55,7 +57,9 @@ namespace RetailData.Services.Linq
                                           ProductQuantity = po.Quantity,
                                           ProductName = po.Product.Name
                                       }).ToList()
-                }).FirstOrDefaultAsync();
+                })
+                .TagWith<CustomerOrder>($"Get order with ID {id}")
+                .FirstOrDefaultAsync();
 
             return order;
         }
@@ -65,6 +69,7 @@ namespace RetailData.Services.Linq
             bool isDeleted = false;
             Order order = await GetOrderById(id)
                 .Include(o => o.ProductOrder)
+                .TagWith<Order>($"Delete order with ID {id}")
                 .FirstOrDefaultAsync();
 
             if (order != null)
@@ -90,7 +95,7 @@ namespace RetailData.Services.Linq
                               });
             }
 
-            Order order = new Order
+            var order = new Order
             {
                 OrderPlaced = DateTime.UtcNow,
                 CustomerId = newOrder.CustomerId,
@@ -106,7 +111,9 @@ namespace RetailData.Services.Linq
         public async Task<bool> SetFulfilled(int id)
         {
             bool isFulfilled = false;
-            var order = await GetOrderById(id).FirstOrDefaultAsync();
+            Order order = await GetOrderById(id)
+                .TagWith<Order>($"Set order with ID {id} as fulfilled")
+                .FirstOrDefaultAsync();
 
             if (order != null)
             {

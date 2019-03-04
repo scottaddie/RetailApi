@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using RetailDomain.DataTransferObjects;
-using RetailDomain.Models;
-using RetailData.Services;
+using Retail.Domain.DataTransferObjects;
+using Retail.Domain.Models;
+using Retail.DataAccess.Services;
 
-namespace RetailApi.Controllers
+namespace Retail.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

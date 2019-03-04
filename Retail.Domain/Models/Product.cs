@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RetailDomain.Models
+namespace Retail.Domain.Models
 {
     public partial class Product
     {
@@ -11,6 +12,7 @@ namespace RetailDomain.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
         public virtual ICollection<ProductOrder> ProductOrder { get; set; }

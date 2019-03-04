@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>RetailApi</RootNamespace>
+    <RootNamespace>Retail.Api</RootNamespace>
     <UserSecretsId>6a3a5aa3-1970-437e-8435-0a29d99c0f1c</UserSecretsId>
   </PropertyGroup>
 
@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RetailData\RetailData.csproj" />
-    <ProjectReference Include="..\RetailDomain\RetailDomain.csproj" />
+    <ProjectReference Include="..\Retail.DataAccess\Retail.DataAccess.csproj" />
+    <ProjectReference Include="..\Retail.Domain\Retail.Domain.csproj" />
   </ItemGroup>
 
 </Project>

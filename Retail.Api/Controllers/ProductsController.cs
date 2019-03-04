@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RetailData.Data;
-using RetailDomain.Models;
+using Retail.DataAccess.Data;
+using Retail.Domain.Models;
 
-namespace RetailApi.Controllers
+namespace Retail.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

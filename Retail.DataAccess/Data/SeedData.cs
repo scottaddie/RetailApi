@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using RetailDomain.Models;
+using Retail.Domain.Models;
 
-namespace RetailData.Data
+namespace Retail.DataAccess.Data
 {
     public static class SeedData
     {       

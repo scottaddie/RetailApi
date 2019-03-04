@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RetailDomain.DataTransferObjects
+namespace Retail.Domain.DataTransferObjects
 {
     public class NewOrder
     {
