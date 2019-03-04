@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using RetailApi.DataTransferObjects;
-using RetailApi.Models;
+using Retail.Domain.DataTransferObjects;
+using Retail.Domain.Models;
 
-namespace RetailApi.Services
+namespace Retail.DataAccess.Services
 {
     public interface IOrderService
     {

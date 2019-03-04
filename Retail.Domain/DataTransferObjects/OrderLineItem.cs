@@ -1,4 +1,4 @@
-﻿namespace RetailApi.DataTransferObjects
+﻿namespace Retail.Domain.DataTransferObjects
 {
     public class OrderLineItem
     {

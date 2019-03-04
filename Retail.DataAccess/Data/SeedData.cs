@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using RetailApi.Models;
+using Retail.Domain.Models;
 
-namespace RetailApi.Data
+namespace Retail.DataAccess.Data
 {
     public static class SeedData
-    {
+    {       
         public static void Initialize(ContosoPetsContext context)
         {
             if (!context.Products.Any())

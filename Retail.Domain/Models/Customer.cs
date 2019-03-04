@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RetailApi.Models
+namespace Retail.Domain.Models
 {
     public partial class Customer
     {

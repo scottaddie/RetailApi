@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RetailApi.Data;
-using RetailApi.DataTransferObjects;
-using RetailApi.Models;
+using Retail.DataAccess.Data;
+using Retail.Domain.DataTransferObjects;
+using Retail.Domain.Models;
 
-namespace RetailApi.Services.Fluent
+namespace Retail.DataAccess.Services.Linq
 {
     public class OrderService : IOrderService
     {
@@ -20,41 +20,46 @@ namespace RetailApi.Services.Fluent
 
         public async Task<List<CustomerOrder>> GetAll()
         {
-            List<CustomerOrder> orders = await (_context.Orders.AsNoTracking()
-                .OrderByDescending(o => o.OrderPlaced)
-                .Select(o => new CustomerOrder
+            List<CustomerOrder> orders = await (
+                from o in _context.Orders.AsNoTracking()
+                orderby o.OrderPlaced descending
+                select new CustomerOrder
                 {
                     OrderId = o.Id,
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled =
-                        (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
-                    OrderLineItems = (o.ProductOrder.Select(po =>
-                            new OrderLineItem
-                            {
-                                ProductQuantity = po.Quantity,
-                                ProductName = po.Product.Name
-                            }))
-                        .ToList()
-                })).ToListAsync();
+                    OrderLineItems = (from po in o.ProductOrder
+                                      select new OrderLineItem
+                                      {
+                                          ProductQuantity = po.Quantity,
+                                          ProductName = po.Product.Name
+                                      }).ToList()
+                })
+                .TagWith<CustomerOrder>("Get all orders")
+                .ToListAsync();
 
             return orders;
         }
 
         public async Task<CustomerOrder> GetById(int id)
         {
-            CustomerOrder order = await GetOrderById(id)
-                .Select(o => new CustomerOrder
+            CustomerOrder order = await (
+                from o in GetOrderById(id)
+                select new CustomerOrder
                 {
                     CustomerName = $"{o.Customer.LastName}, {o.Customer.FirstName}",
-                    OrderFulfilled = (o.OrderFulfilled.HasValue) ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
+                    OrderFulfilled = o.OrderFulfilled.HasValue ? o.OrderFulfilled.Value.ToShortDateString() : string.Empty,
                     OrderPlaced = o.OrderPlaced.ToShortDateString(),
-                    OrderLineItems = (o.ProductOrder.Select(po => new OrderLineItem
-                                                            {
-                                                                ProductQuantity = po.Quantity,
-                                                                ProductName = po.Product.Name
-                                                            })).ToList()
-                }).FirstOrDefaultAsync();
+                    OrderLineItems = (from po in o.ProductOrder
+                                      select new OrderLineItem
+                                      {
+                                          ProductQuantity = po.Quantity,
+                                          ProductName = po.Product.Name
+                                      }).ToList()
+                })
+                .TagWith<CustomerOrder>($"Get order with ID {id}")
+                .FirstOrDefaultAsync();
 
             return order;
         }
@@ -64,6 +69,7 @@ namespace RetailApi.Services.Fluent
             bool isDeleted = false;
             Order order = await GetOrderById(id)
                 .Include(o => o.ProductOrder)
+                .TagWith<Order>($"Delete order with ID {id}")
                 .FirstOrDefaultAsync();
 
             if (order != null)
@@ -75,7 +81,6 @@ namespace RetailApi.Services.Fluent
 
             return isDeleted;
         }
-
 
         public async Task<Order> Create(NewOrder newOrder)
         {
@@ -90,8 +95,9 @@ namespace RetailApi.Services.Fluent
                               });
             }
 
-            Order order = new Order
+            var order = new Order
             {
+                OrderPlaced = DateTime.UtcNow,
                 CustomerId = newOrder.CustomerId,
                 ProductOrder = lineItems
             };
@@ -99,13 +105,15 @@ namespace RetailApi.Services.Fluent
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return order;
+            return order;            
         }
 
         public async Task<bool> SetFulfilled(int id)
         {
             bool isFulfilled = false;
-            var order = await GetOrderById(id).FirstOrDefaultAsync();
+            Order order = await GetOrderById(id)
+                .TagWith<Order>($"Set order with ID {id} as fulfilled")
+                .FirstOrDefaultAsync();
 
             if (order != null)
             {
@@ -119,6 +127,8 @@ namespace RetailApi.Services.Fluent
         }
 
         private IQueryable<Order> GetOrderById(int id) =>
-            _context.Orders.AsNoTracking().Where(o => o.Id == id);
+            from o in _context.Orders.AsNoTracking()
+            where o.Id == id
+            select o;
     }
 }
