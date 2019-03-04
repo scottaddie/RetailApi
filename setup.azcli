@@ -6,8 +6,8 @@ declare instanceId=$(($RANDOM * $RANDOM))
 # Variables
 declare gitUrl=https://github.com/scottaddie/retailapi
 declare gitBranch=master
-declare gitRepoWorkingDirectory=~/retailapi/retail-api
-declare retailApiProjectFile=retail-api/RetailApi.csproj
+declare gitRepoWorkingDirectory=~/retailapi/Retail.Api
+declare retailApiProjectFile=Retail.Api/Retail.Api.csproj
 
 declare sqlServerName=sql$instanceId
 declare sqlUsername=SqlUser
