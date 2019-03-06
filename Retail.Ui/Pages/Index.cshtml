@@ -1,10 +1,32 @@
 ﻿@page
-@using Microsoft.AspNetCore.Routing
+@using Retail.Domain.DataTransferObjects
 @model IndexModel
-@inject LinkGenerator UrlGenerator
 
-LinkGenerator.GetPathByAction: <input type="text" value='@UrlGenerator.GetPathByAction(HttpContext, action: "GetAll", controller: "Products")' />
-<br />
-LinkGenerator.GetUriByAction: <input type="text" value='@UrlGenerator.GetUriByAction(HttpContext, action: "GetAll", controller: "Products")' />
-<br />
-Url.RouteUrl: <input type="text" value='@Url.RouteUrl("ControllerOnlyRouteName_Attribute", new { controller = "Products" })' />
+<table class="table table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Date placed</th>
+            <th scope="col">Date fulfilled</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.GetOrdersError)
+        {
+            <tr>
+                <td class="badge-danger" colspan="3">No customer orders were found</td>
+            </tr>
+        }
+        else
+        {
+            foreach (CustomerOrder order in Model.Orders)
+            {
+                <tr>
+                    <th scope="row">@order.CustomerName</th>
+                    <td>@order.OrderPlaced</td>
+                    <td>@order.OrderFulfilled</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
