@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.DataAccess", "Retail
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.Domain", "Retail.Domain\Retail.Domain.csproj", "{615989E6-FD23-4810-A380-19D42F239DC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailUi", "Retail.Ui\RetailUi.csproj", "{E0660191-0D69-4EA9-B671-F4E06334CFC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.Ui", "Retail.Ui\Retail.Ui.csproj", "{E0660191-0D69-4EA9-B671-F4E06334CFC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
